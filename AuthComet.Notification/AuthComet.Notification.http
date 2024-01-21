@@ -1,0 +1,6 @@
+@AuthComet.Notification_HostAddress = http://localhost:5207
+
+GET {{AuthComet.Notification_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

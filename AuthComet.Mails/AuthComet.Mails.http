@@ -1,0 +1,6 @@
+@AuthComet.Mails_HostAddress = http://localhost:5116
+
+GET {{AuthComet.Mails_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

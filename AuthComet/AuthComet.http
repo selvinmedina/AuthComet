@@ -1,0 +1,6 @@
+@AuthComet_HostAddress = http://localhost:5218
+
+GET {{AuthComet_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

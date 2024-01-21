@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34309.116
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthComet.Auth", "AuthComet\AuthComet.Auth.csproj", "{FEDD2373-F4C3-42FA-B483-020B59B5E8F2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthComet.Domain", "AuthComet.Domain\AuthComet.Domain.csproj", "{0654AC2B-8E43-4822-BB98-9F4FF161558E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthComet.Mails", "AuthComet.Mails\AuthComet.Mails.csproj", "{A4F020B9-AA8C-4A46-A16F-60FB090910BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthComet.Notification", "AuthComet.Notification\AuthComet.Notification.csproj", "{E2293254-AB6D-46F5-97BD-75C45083B8E5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{F4093988-DA56-46C2-8A21-E21F5F73E6BD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthComet.UnitTests", "AuthComet.UnitTests\AuthComet.UnitTests.csproj", "{ADC1C628-9E62-437D-81BA-2A35787ECEFB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FEDD2373-F4C3-42FA-B483-020B59B5E8F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEDD2373-F4C3-42FA-B483-020B59B5E8F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEDD2373-F4C3-42FA-B483-020B59B5E8F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEDD2373-F4C3-42FA-B483-020B59B5E8F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0654AC2B-8E43-4822-BB98-9F4FF161558E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0654AC2B-8E43-4822-BB98-9F4FF161558E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0654AC2B-8E43-4822-BB98-9F4FF161558E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0654AC2B-8E43-4822-BB98-9F4FF161558E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4F020B9-AA8C-4A46-A16F-60FB090910BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4F020B9-AA8C-4A46-A16F-60FB090910BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4F020B9-AA8C-4A46-A16F-60FB090910BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4F020B9-AA8C-4A46-A16F-60FB090910BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2293254-AB6D-46F5-97BD-75C45083B8E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2293254-AB6D-46F5-97BD-75C45083B8E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2293254-AB6D-46F5-97BD-75C45083B8E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2293254-AB6D-46F5-97BD-75C45083B8E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADC1C628-9E62-437D-81BA-2A35787ECEFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADC1C628-9E62-437D-81BA-2A35787ECEFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADC1C628-9E62-437D-81BA-2A35787ECEFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADC1C628-9E62-437D-81BA-2A35787ECEFB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{ADC1C628-9E62-437D-81BA-2A35787ECEFB} = {F4093988-DA56-46C2-8A21-E21F5F73E6BD}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CB2BA8BD-849E-4661-B9F6-B1FFBDDD4E1E}
+	EndGlobalSection
+EndGlobal
