@@ -23,7 +23,7 @@ namespace AuthComet.Domain.Validations
             {
                 Id = userDto.Id, // Assuming Id is handled externally or auto-incremented
                 Username = userDto.Username,
-                Password = userDto.Password,
+                Password = HashPassword(userDto.Password),
                 Email = userDto.Email,
                 CreationDate = DateTime.Now
             };
@@ -36,6 +36,16 @@ namespace AuthComet.Domain.Validations
             string pattern = @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$";
 
             return Regex.IsMatch(email, pattern);
+        }
+
+        public string HashPassword(string password)
+        {
+            return BCrypt.Net.BCrypt.HashPassword(password);
+        }
+
+        public bool VerifyPassword(string enteredPassword, string storedHash)
+        {
+            return BCrypt.Net.BCrypt.Verify(enteredPassword, storedHash);
         }
     }
 }

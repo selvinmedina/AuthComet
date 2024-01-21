@@ -27,7 +27,7 @@ namespace AuthComet.UnitTests
             result.Ok.Should().BeTrue();
             result.Data.Should().NotBeNull();
             result.Data!.Username.Should().Be("validUser");
-            result.Data.Password.Should().Be("ValidPassword123!");
+            result.Data.Password.Should().NotBe("ValidPassword123!");
             result.Data.Email.Should().Be("valid@example.com");
         }
 
@@ -94,10 +94,53 @@ namespace AuthComet.UnitTests
             result.Ok.Should().BeTrue();
             result.Data.Should().NotBeNull();
             result.Data!.Username.Should().Be("validUser");
-            result.Data.Password.Should().Be("ValidPassword123!");
+            result.Data.Password.Should().NotBe("ValidPassword123!");
             result.Data.Email.Should().Be("valid@example.com");
             result.Data.Id.Should().Be(0);
             result.Data.CreationDate.Should().BeCloseTo(DateTime.Now, TimeSpan.FromSeconds(5));
+        }
+
+        [Fact]
+        public void HashPassword_ShouldGenerateHashedPassword()
+        {
+            // Arrange
+            var plainPassword = "TestPassword123";
+
+            // Act
+            var hashedPassword = _userDomain.HashPassword(plainPassword);
+
+            // Assert
+            hashedPassword.Should().NotBeNullOrWhiteSpace();
+            hashedPassword.Should().NotBe(plainPassword);
+        }
+
+        [Fact]
+        public void VerifyPassword_WithCorrectPassword_ShouldReturnTrue()
+        {
+            // Arrange
+            var plainPassword = "TestPassword123";
+            var hashedPassword = _userDomain.HashPassword(plainPassword);
+
+            // Act
+            var result = _userDomain.VerifyPassword(plainPassword, hashedPassword);
+
+            // Assert
+            result.Should().BeTrue();
+        }
+
+        [Fact]
+        public void VerifyPassword_WithIncorrectPassword_ShouldReturnFalse()
+        {
+            // Arrange
+            var plainPassword = "TestPassword123";
+            var wrongPassword = "WrongPassword";
+            var hashedPassword = _userDomain.HashPassword(plainPassword);
+
+            // Act
+            var result = _userDomain.VerifyPassword(wrongPassword, hashedPassword);
+
+            // Assert
+            result.Should().BeFalse();
         }
     }
 }

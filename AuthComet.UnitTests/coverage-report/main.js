@@ -224,7 +224,7 @@ var assemblies = [
       { "name": "AuthComet.Domain.Dtos.UserDto", "rp": "AuthComet.Domain_UserDto.html", "cl": 12, "ucl": 0, "cal": 12, "tl": 24, "cb": 0, "tb": 0, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
       { "name": "AuthComet.Domain.Entities.User", "rp": "AuthComet.Domain_User.html", "cl": 5, "ucl": 0, "cal": 5, "tl": 11, "cb": 0, "tb": 0, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
       { "name": "AuthComet.Domain.Response.Response<T>", "rp": "AuthComet.Domain_Response_1.html", "cl": 19, "ucl": 0, "cal": 19, "tl": 29, "cb": 0, "tb": 0, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
-      { "name": "AuthComet.Domain.Validations.UserDomain", "rp": "AuthComet.Domain_UserDomain.html", "cl": 21, "ucl": 0, "cal": 21, "tl": 41, "cb": 8, "tb": 8, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
+      { "name": "AuthComet.Domain.Validations.UserDomain", "rp": "AuthComet.Domain_UserDomain.html", "cl": 27, "ucl": 0, "cal": 27, "tl": 51, "cb": 8, "tb": 8, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
     ]},
 ];
 
