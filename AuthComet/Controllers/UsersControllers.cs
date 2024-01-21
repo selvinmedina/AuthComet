@@ -1,4 +1,5 @@
 ﻿using AuthComet.Auth.Features.Auth;
+using AuthComet.Auth.Features.Queues;
 using AuthComet.Auth.Features.Users;
 using AuthComet.Domain.Dtos;
 using Microsoft.AspNetCore.Authorization;
@@ -12,11 +13,15 @@ namespace AuthComet.Auth.Controllers
     {
         private readonly UsersService _usersService;
         private readonly AuthService _authService;
+        private readonly RabbitMQProducer _rabbitMQProducer;
 
-        public UsersController(UsersService usersService, AuthService authService)
+        public UsersController(UsersService usersService,
+            AuthService authService,
+            RabbitMQProducer rabbitMQProducer)
         {
             _usersService = usersService;
             _authService = authService;
+            _rabbitMQProducer = rabbitMQProducer;
         }
 
         [HttpPost]
@@ -25,6 +30,12 @@ namespace AuthComet.Auth.Controllers
             var response = await _usersService.CreateAsync(user);
             if (response.Ok)
             {
+                _rabbitMQProducer.SendMessage(new()
+                {
+                    UserId = response.Data!.Id,
+                    Email = response.Data.Email
+                });
+
                 return Ok(response.Data);
             }
 

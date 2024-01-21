@@ -5,9 +5,9 @@ POST {{AuthComet_HostAddress}}/api/users
 Content-Type: application/json
 
 {
-  "username": "newUser2",
+  "username": "selvinmedina",
   "password": "userPassword1234",
-  "email": "newuserr@example.com"
+  "email": "selvinmedina@gmail.com"
 }
 
 ###

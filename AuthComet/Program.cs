@@ -1,5 +1,6 @@
 using AuthComet.Auth.Common;
 using AuthComet.Auth.Features.Auth;
+using AuthComet.Auth.Features.Queues;
 using AuthComet.Auth.Features.Users;
 using AuthComet.Auth.Infrastructure;
 using AuthComet.Auth.Infrastructure.AuthCometDatabase;
@@ -47,6 +48,13 @@ builder.Services.AddTransient<UsersService>();
 builder.Services.AddTransient<AuthService>();
 builder.Services.AddSingleton<UserDomain>();
 builder.Services.AddSingleton(jwtSettings);
+
+var rabbitMqSettings = new RabbitMqSettings();
+builder.Configuration.GetSection("RabbitMQ").Bind(rabbitMqSettings);
+builder.Services.AddSingleton(rabbitMqSettings);
+
+builder.Services.AddTransient<RabbitMQProducer>();
+
 
 var app = builder.Build();
 

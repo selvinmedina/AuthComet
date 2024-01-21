@@ -1,10 +1,10 @@
 ﻿using AuthComet.Mails.Common;
-using System.Net.Mail;
 using System.Net;
+using System.Net.Mail;
 
 namespace AuthComet.Mails.Features.Emails
 {
-    public class EmailService: IEmailService
+    public class EmailService : IEmailService
     {
         private readonly SmtpSettings _smtpSettings;
         private readonly ILogger<EmailService> _logger;

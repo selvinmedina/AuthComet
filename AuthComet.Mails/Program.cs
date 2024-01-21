@@ -1,5 +1,6 @@
 using AuthComet.Mails.Common;
 using AuthComet.Mails.Features.Emails;
+using AuthComet.Mails.Features.Queues;
 using Hangfire;
 using Hangfire.Console;
 using Hangfire.Mongo;
@@ -49,6 +50,12 @@ builder.Services.AddHangfireServer(options =>
     options.Queues = new[] { "sync_process", "default" };
 });
 
+var rabbitMqSettings = new RabbitMqSettings();
+builder.Configuration.GetSection("RabbitMQ").Bind(rabbitMqSettings);
+builder.Services.AddSingleton(rabbitMqSettings);
+builder.Services.AddSingleton<RabbitMQConsumer>();
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -67,5 +74,7 @@ app.UseHangfireDashboard(options: new DashboardOptions
     Authorization = new[] { new MyAuthorizationFilter() },
     DashboardTitle = "Hangfire - Send Emails"
 });
+
+app.UseRabbitMQListener();
 
 app.Run();
