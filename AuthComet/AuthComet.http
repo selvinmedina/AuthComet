@@ -1,4 +1,5 @@
 @AuthComet_HostAddress = http://localhost:5218
+@AuthComet_HostAddress_https = https://localhost:7100
 
 POST {{AuthComet_HostAddress}}/api/users
 Content-Type: application/json
@@ -8,5 +9,19 @@ Content-Type: application/json
   "password": "userPassword1234",
   "email": "newuserr@example.com"
 }
+
+###
+
+POST {{AuthComet_HostAddress}}/api/users/login
+Content-Type: application/json
+
+{
+  "email": "newuserr@example.com",
+  "password": "userPassword1234"
+}
+
+###
+GET {{AuthComet_HostAddress_https}}/api/users/GetUserData
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIyIiwianRpIjoiMTA1NjMxZmMtNTZhZC00MTAzLTk4ODEtZjdhM2FiNzk1NGFiIiwic3ViIjoibmV3dXNlcnJAZXhhbXBsZS5jb20iLCJlbWFpbCI6Im5ld3VzZXJyQGV4YW1wbGUuY29tIiwibmJmIjoxNzA1ODUwNjQyLCJleHAiOjE3MDY0NTU0NDIsImlhdCI6MTcwNTg1MDY0MiwiaXNzIjoiaHR0cHM6Ly9pZC5zZWx2aW5tZWRpbmEuY29tIiwiYXVkIjoiaHR0cHM6Ly9zZWx2aW5tZWRpbmEuY29tIn0.9ojer_A0tos0JTieEsjfNaMdXSvCN3x9rfYoRQ9dkaE
 
 ###

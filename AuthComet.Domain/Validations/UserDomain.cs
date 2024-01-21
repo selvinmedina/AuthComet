@@ -31,6 +31,17 @@ namespace AuthComet.Domain.Validations
             return Response<User>.Success(user);
         }
 
+        public Response<bool> CheckLoginDto(LoginDto loginDto)
+        {
+            if (string.IsNullOrWhiteSpace(loginDto.Email) || !IsValidEmail(loginDto.Email))
+                return Response<bool>.Fail(UserMessages.InvalidEmail);
+
+            if (string.IsNullOrWhiteSpace(loginDto.Password))
+                return Response<bool>.Fail(UserMessages.PasswordRequired);
+
+            return Response<bool>.Success(true);
+        }
+
         private bool IsValidEmail(string email)
         {
             string pattern = @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$";

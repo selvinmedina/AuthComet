@@ -1,5 +1,7 @@
-﻿using AuthComet.Auth.Features.Users;
+﻿using AuthComet.Auth.Features.Auth;
+using AuthComet.Auth.Features.Users;
 using AuthComet.Domain.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AuthComet.Auth.Controllers
@@ -9,10 +11,12 @@ namespace AuthComet.Auth.Controllers
     public class UsersController : ControllerBase
     {
         private readonly UsersService _usersService;
+        private readonly AuthService _authService;
 
-        public UsersController(UsersService usersService)
+        public UsersController(UsersService usersService, AuthService authService)
         {
             _usersService = usersService;
+            _authService = authService;
         }
 
         [HttpPost]
@@ -25,6 +29,28 @@ namespace AuthComet.Auth.Controllers
             }
 
             return BadRequest(response.Message);
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> LoginAsync([FromBody] LoginDto loginDto)
+        {
+            var response = await _usersService.LoginAsync(loginDto);
+            if (response.Ok)
+            {
+                var token = _authService.GenerateToken(response.Data!.Id, response.Data.Email);
+                return Ok(new { token });
+            }
+
+            return BadRequest(response.Message);
+        }
+
+        [Authorize]
+        [HttpGet("GetUserData")]
+        public IActionResult GetUserData()
+        {
+            var userId = User.FindFirst("userId")?.Value;
+
+            return Ok(new { UserId = userId });
         }
     }
 }

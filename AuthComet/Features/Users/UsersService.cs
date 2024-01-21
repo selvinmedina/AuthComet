@@ -1,8 +1,10 @@
-﻿using AuthComet.Domain.Dtos;
+﻿using AuthComet.Auth.Common;
+using AuthComet.Domain.Dtos;
 using AuthComet.Domain.Entities;
 using AuthComet.Domain.Response;
 using AuthComet.Domain.Validations;
 using EntityFramework.Infrastructure.Core.UnitOfWork;
+using Microsoft.EntityFrameworkCore;
 
 namespace AuthComet.Auth.Features.Users
 {
@@ -14,7 +16,7 @@ namespace AuthComet.Auth.Features.Users
 
         public UsersService(
             ILogger<UsersService> logger,
-            IUnitOfWork unitOfWork, 
+            IUnitOfWork unitOfWork,
             UserDomain userDomain)
         {
             _unitOfWork = unitOfWork;
@@ -43,6 +45,47 @@ namespace AuthComet.Auth.Features.Users
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error creating user");
+                return Response<UserDto>.Fail(ex.Message);
+            }
+        }
+
+        public async Task<Response<UserDto>> LoginAsync(LoginDto loginDto)
+        {
+
+            var isLoginDtoValid = _userDomain.CheckLoginDto(loginDto);
+            if (!isLoginDtoValid.Ok)
+            {
+                return Response<UserDto>.Fail(isLoginDtoValid.Message);
+            }
+
+            try
+            {
+                var user = await _unitOfWork.Repository<User>().AsQueryable()
+                    .FirstOrDefaultAsync(u => u.Email == loginDto.Email);
+
+                if (user == null)
+                {
+                    return Response<UserDto>.Fail(Messages.InvalidUserOrPassword);
+                }
+
+                if (!_userDomain.VerifyPassword(loginDto.Password, user.Password))
+                {
+                    return Response<UserDto>.Fail(Messages.InvalidUserOrPassword);
+                }
+
+                var userDto = new UserDto()
+                {
+                    Id = user.Id,
+                    Username = user.Username,
+                    Email = user.Email,
+                    CreationDate = user.CreationDate
+                };
+
+                return Response<UserDto>.Success(userDto);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error logging in user");
                 return Response<UserDto>.Fail(ex.Message);
             }
         }

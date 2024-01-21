@@ -142,5 +142,52 @@ namespace AuthComet.UnitTests
             // Assert
             result.Should().BeFalse();
         }
+
+        [Fact]
+        public void CheckLoginDto_WithValidData_ShouldReturnSuccess()
+        {
+            // Arrange
+            var loginDto = new LoginDto { Email = "test@example.com", Password = "Password123" };
+
+            // Act
+            var result = _userDomain.CheckLoginDto(loginDto);
+
+            // Assert
+            result.Ok.Should().BeTrue();
+            result.Data.Should().BeTrue();
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData(null)]
+        [InlineData("invalidEmail")]
+        public void CheckLoginDto_WithInvalidEmail_ShouldReturnFail(string? invalidEmail)
+        {
+            // Arrange
+            var loginDto = new LoginDto { Email = invalidEmail!, Password = "Password123" };
+
+            // Act
+            var result = _userDomain.CheckLoginDto(loginDto);
+
+            // Assert
+            result.Ok.Should().BeFalse();
+            result.Message.Should().Be(UserMessages.InvalidEmail);
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData(null)]
+        public void CheckLoginDto_WithInvalidPassword_ShouldReturnFail(string? invalidPassword)
+        {
+            // Arrange
+            var loginDto = new LoginDto { Email = "test@example.com", Password = invalidPassword! };
+
+            // Act
+            var result = _userDomain.CheckLoginDto(loginDto);
+
+            // Assert
+            result.Ok.Should().BeFalse();
+            result.Message.Should().Be(UserMessages.PasswordRequired);
+        }
     }
 }
