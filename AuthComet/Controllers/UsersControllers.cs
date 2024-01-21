@@ -33,7 +33,8 @@ namespace AuthComet.Auth.Controllers
                 _rabbitMQProducer.SendMessage(new()
                 {
                     UserId = response.Data!.Id,
-                    Email = response.Data.Email
+                    Email = response.Data.Email,
+                    Username = response.Data.Username
                 });
 
                 return Ok(response.Data);

@@ -1,6 +1,8 @@
 ﻿using AuthComet.Mails.Common;
 using AuthComet.Mails.Common.RabbitMessages;
 using AuthComet.Mails.Features.Emails;
+using AuthComet.Mails.Features.Statistics;
+using Hangfire;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
@@ -55,8 +57,14 @@ namespace AuthComet.Mails.Features.Queues
 
         private void ProcessMessage(UserCreationMessage message)
         {
-            throw new NotImplementedException();
+            var recurringJobId = $"SendStatistics-{message.UserId}";
+
+            RecurringJob.AddOrUpdate<StatisticsService>(
+                recurringJobId,
+                x => x.SendStatisticsAsync(message.Username, message.Email),
+                Cron.Weekly);
         }
+
 
         public void Dispose()
         {
