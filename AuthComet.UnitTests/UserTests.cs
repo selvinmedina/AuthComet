@@ -1,5 +1,4 @@
 using AuthComet.Domain.Dtos;
-using AuthComet.Domain.Entities;
 using AuthComet.Domain.Validations;
 using AuthComet.Domain.Validations.Messages;
 using FluentAssertions;

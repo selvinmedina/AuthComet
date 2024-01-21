@@ -1,9 +1,13 @@
+using AuthComet.Auth.Infrastructure.AuthCometDatabase;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddDbContext<AuthCometDbContext>(options =>
+            options.UseSqlServer("name=AuthComet"));
 
 var app = builder.Build();
 
