@@ -1,5 +1,6 @@
 using AuthComet.Mails.Common;
 using AuthComet.Mails.Features.Emails;
+using AuthComet.Mails.Features.Notifications;
 using AuthComet.Mails.Features.Queues;
 using Hangfire;
 using Hangfire.Console;
@@ -55,6 +56,12 @@ builder.Configuration.GetSection("RabbitMQ").Bind(rabbitMqSettings);
 builder.Services.AddSingleton(rabbitMqSettings);
 builder.Services.AddSingleton<RabbitMQConsumer>();
 
+var hubUrl = configuration["Apis:AuthCometNotificationHub"];
+builder.Services.AddSingleton(provider =>
+{
+    var emailService = provider.GetRequiredService<IEmailService>();
+    return new NotificationService(hubUrl!, emailService);
+});
 
 var app = builder.Build();
 
@@ -76,5 +83,8 @@ app.UseHangfireDashboard(options: new DashboardOptions
 });
 
 app.UseRabbitMQListener();
+
+var notificationService = app.Services.GetRequiredService<NotificationService>();
+await notificationService.Start();
 
 app.Run();

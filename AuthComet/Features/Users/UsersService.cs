@@ -1,4 +1,5 @@
 ﻿using AuthComet.Auth.Common;
+using AuthComet.Auth.Features.Notification;
 using AuthComet.Domain.Dtos;
 using AuthComet.Domain.Entities;
 using AuthComet.Domain.Response;
@@ -13,15 +14,18 @@ namespace AuthComet.Auth.Features.Users
         private readonly IUnitOfWork _unitOfWork;
         private readonly UserDomain _userDomain;
         private readonly ILogger<UsersService> _logger;
+        private readonly INotificationService _notificationService;
 
         public UsersService(
             ILogger<UsersService> logger,
             IUnitOfWork unitOfWork,
-            UserDomain userDomain)
+            UserDomain userDomain,
+            INotificationService notificationService)
         {
             _unitOfWork = unitOfWork;
             _userDomain = userDomain;
             _logger = logger;
+            _notificationService = notificationService;
         }
 
         public async Task<Response<UserDto>> CreateAsync(UserDto user)
@@ -80,6 +84,8 @@ namespace AuthComet.Auth.Features.Users
                     Email = user.Email,
                     CreationDate = user.CreationDate
                 };
+
+                await _notificationService.SendUserWhoLoggedIn(userDto.Username, userDto.Email);
 
                 return Response<UserDto>.Success(userDto);
             }

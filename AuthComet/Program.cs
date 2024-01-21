@@ -1,5 +1,6 @@
 using AuthComet.Auth.Common;
 using AuthComet.Auth.Features.Auth;
+using AuthComet.Auth.Features.Notification;
 using AuthComet.Auth.Features.Queues;
 using AuthComet.Auth.Features.Users;
 using AuthComet.Auth.Infrastructure;
@@ -54,6 +55,14 @@ builder.Configuration.GetSection("RabbitMQ").Bind(rabbitMqSettings);
 builder.Services.AddSingleton(rabbitMqSettings);
 
 builder.Services.AddTransient<RabbitMQProducer>();
+
+builder.Services.AddTransient<INotificationService>(x =>
+{
+    var hubUrl = config["Apis:AuthCometNotificationHub"];
+
+    return new NotificationService(hubUrl!);
+});
+
 
 
 var app = builder.Build();

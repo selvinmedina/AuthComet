@@ -22,29 +22,62 @@ namespace AuthComet.Mails.Features.Emails
                 throw new ArgumentException("Email recipient cannot be null or empty.", nameof(to));
             }
 
-            using (var message = new MailMessage())
+            try
             {
-                message.To.Add(new MailAddress(to));
-                message.From = new MailAddress(_smtpSettings.From);
-                message.Subject = subject;
-                message.Body = body;
-                message.IsBodyHtml = isBodyHtml;
-
-                using (var client = new SmtpClient(_smtpSettings.Host, _smtpSettings.Port))
+                using (var message = new MailMessage())
                 {
-                    client.Credentials = new NetworkCredential(_smtpSettings.Username, _smtpSettings.Password);
-                    client.EnableSsl = _smtpSettings.EnableSsl;
+                    message.To.Add(new MailAddress(to));
+                    message.From = new MailAddress(_smtpSettings.From);
+                    message.Subject = subject;
+                    message.Body = body;
+                    message.IsBodyHtml = isBodyHtml;
 
-                    try
+                    using (var client = new SmtpClient(_smtpSettings.Host, _smtpSettings.Port))
                     {
+                        client.Credentials = new NetworkCredential(_smtpSettings.Username, _smtpSettings.Password);
+                        client.EnableSsl = _smtpSettings.EnableSsl;
+
                         await client.SendMailAsync(message);
                     }
-                    catch (SmtpException smtpEx)
+                }
+            }
+            catch (SmtpException smtpEx)
+            {
+                _logger.LogError(smtpEx, "Failed to send email.");
+                throw new InvalidOperationException("Failed to send email.", smtpEx);
+            }
+        }
+
+        public void SendEmail(string to, string subject, string body, bool isBodyHtml = true)
+        {
+            if (string.IsNullOrEmpty(to))
+            {
+                throw new ArgumentException("Email recipient cannot be null or empty.", nameof(to));
+            }
+
+            try
+            {
+                using (var message = new MailMessage())
+                {
+                    message.To.Add(new MailAddress(to));
+                    message.From = new MailAddress(_smtpSettings.From);
+                    message.Subject = subject;
+                    message.Body = body;
+                    message.IsBodyHtml = isBodyHtml;
+
+                    using (var client = new SmtpClient(_smtpSettings.Host, _smtpSettings.Port))
                     {
-                        _logger.LogError(smtpEx, "Failed to send email.");
-                        throw new InvalidOperationException("Failed to send email.", smtpEx);
+                        client.Credentials = new NetworkCredential(_smtpSettings.Username, _smtpSettings.Password);
+                        client.EnableSsl = _smtpSettings.EnableSsl;
+
+                        client.Send(message);
                     }
                 }
+            }
+            catch (SmtpException smtpEx)
+            {
+                _logger.LogError(smtpEx, "Failed to send email.");
+                throw new InvalidOperationException("Failed to send email.", smtpEx);
             }
         }
     }
