@@ -1,4 +1,5 @@
 using AuthComet.Mails.Common;
+using AuthComet.Mails.Features.Emails;
 using Hangfire;
 using Hangfire.Console;
 using Hangfire.Mongo;
@@ -12,6 +13,11 @@ builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+var smtpSettings = new SmtpSettings();
+configuration.GetSection("SmtpSettings").Bind(smtpSettings);
+builder.Services.AddSingleton(smtpSettings);
+builder.Services.AddTransient<IEmailService, EmailService>();
 
 builder.Services.AddHangfire(config =>
 {

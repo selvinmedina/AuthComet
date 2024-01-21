@@ -1,6 +1,14 @@
-@AuthComet.Mails_HostAddress = http://localhost:5116
+@AuthComet.Mails_HostAddress = https://localhost:7215
 
-GET {{AuthComet.Mails_HostAddress}}/weatherforecast/
-Accept: application/json
+### Send test email
+POST {{AuthComet.Mails_HostAddress}}/api/emailtest/send
+Content-Type: application/json
+
+{
+  "to": "selvinmedina0016@gmail.com",
+  "subject": "Test Email Subject",
+  "body": "<h1>This is a test email body</h1>",
+  "isBodyHtml": true
+}
 
 ###
