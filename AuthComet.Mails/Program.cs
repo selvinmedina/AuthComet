@@ -1,9 +1,47 @@
-var builder = WebApplication.CreateBuilder(args);
+using AuthComet.Mails.Common;
+using Hangfire;
+using Hangfire.Console;
+using Hangfire.Mongo;
+using Hangfire.Mongo.Migration.Strategies;
+using Hangfire.Mongo.Migration.Strategies.Backup;
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+var builder = WebApplication.CreateBuilder(args);
+var configuration = builder.Configuration;
+
+builder.Services.AddControllers();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddHangfire(config =>
+{
+    string connectionString = configuration.GetConnectionString("Mongo")!;
+    string databaseName = configuration["HangFire:DatabaseName"]!;
+
+    var storageOptions = new MongoStorageOptions
+    {
+        CheckConnection = true,
+
+        MigrationOptions = new MongoMigrationOptions
+        {
+            MigrationStrategy = new MigrateMongoMigrationStrategy(),
+            BackupStrategy = new CollectionMongoBackupStrategy()
+        },
+
+        JobExpirationCheckInterval = TimeSpan.FromMinutes(15)
+    };
+
+    config.UseMongoStorage(connectionString, databaseName, storageOptions);
+
+    config.UseConsole();
+});
+
+
+builder.Services.AddHangfireServer(options =>
+{
+    options.WorkerCount = 3;
+    options.Queues = new[] { "sync_process", "default" };
+});
 
 var app = builder.Build();
 
@@ -16,29 +54,12 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+app.MapControllers();
 
-app.MapGet("/weatherforecast", () =>
+app.UseHangfireDashboard(options: new DashboardOptions
 {
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
+    Authorization = new[] { new MyAuthorizationFilter() },
+    DashboardTitle = "Hangfire - Send Emails"
+});
 
 app.Run();
-
-internal record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
